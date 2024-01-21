@@ -1,3 +1,3 @@
 class BaseModel:
-    def __init__(self) -> None:
+    def __init__(self, args) -> None:
         pass

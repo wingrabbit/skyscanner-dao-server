@@ -13,6 +13,10 @@ def get_db_status():
     cursor.execute("SELECT * FROM status WHERE id=1")
     return cursor.fetchone()
 
+def select_one_record(query):
+    cursor.execute(query)
+    return cursor.fetchone()
+
 def execute_query(query):
     cursor.execute(query)
     conn.commit()
