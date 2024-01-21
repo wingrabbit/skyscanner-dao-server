@@ -9,7 +9,10 @@ conn = psycopg2.connect(database = DB_NAME,
 
 cursor = conn.cursor()
 
-
 def get_db_status():
     cursor.execute("SELECT * FROM status WHERE id=1")
     return cursor.fetchone()
+
+def execute_query(query):
+    cursor.execute(query)
+    conn.commit()
