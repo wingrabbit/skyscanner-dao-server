@@ -4,7 +4,8 @@ class City(BaseModel):
     
     table_name = 'cities'
 
-    id, name, country_id, sky_id, entity_id = None
+    default_fields = ['name', 'sky_id', 'entity_id']
+    nullable_fields = ['country_id']
 
     def __init__(self, name, sky_id, entity_id):
         self.name = name
