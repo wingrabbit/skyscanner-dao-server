@@ -1,6 +1,6 @@
-from orm.base_model import BaseModel
+from orm.base_orm_model import BaseOrmModel
 
-class Cities(BaseModel):
+class Cities(BaseOrmModel):
     
     table_name = 'cities'
 

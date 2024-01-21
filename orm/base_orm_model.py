@@ -1,7 +1,9 @@
 from dao.db_connector import execute_query
+from model.base_model import BaseModel
 
-class BaseModel:
+class BaseOrmModel:
 
+    model = BaseModel.__name__
     table_name=''
     id_field='id'
     default_fields=[]
