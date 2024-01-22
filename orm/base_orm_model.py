@@ -1,6 +1,7 @@
 from dao.db_connector import execute_query, select_one_record
 from model.base_model import BaseModel
 from model.city import City
+from model.result import Result
 
 class BaseOrmModel:
 
