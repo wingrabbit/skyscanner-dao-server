@@ -5,6 +5,7 @@ from model.city import City
 class BaseOrmModel:
 
     model = BaseModel
+    repetitive = False
     table_name=''
     id_field='id'
     default_fields=[]
@@ -29,6 +30,11 @@ class BaseOrmModel:
         Returns:
             (Model): instance of the related models with the inserted values
         """
+        if not self.repetitive:
+            attempt = self.select_by_multiple_fields(fields, values)
+            if attempt is not None:
+                return attempt
+
         query = f'INSERT INTO {self.table_name}({self.stringify_list(fields)}) VALUES ({self.stringify_list(values, True)})'
         try:
             execute_query(query)
