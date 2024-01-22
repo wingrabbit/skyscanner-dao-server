@@ -25,16 +25,16 @@ class BaseOrmModel:
 
         Args:
             fields ([str]): list of fields names
-            values([str]): list of correlated values
+            values ([str]): list of correlated values
         Returns:
-            str: reslut of the execution
+            (Model): instance of the related models with the inserted values
         """
         query = f'INSERT INTO {self.table_name}({self.stringify_list(fields)}) VALUES ({self.stringify_list(values, True)})'
         try:
             execute_query(query)
-            return query
         except (Exception) as error:
             return f"Failed to insert: {error}"
+        return self.select_by_multiple_fields(fields, values)
     
     
     def insert_values(self, values: [str]):
@@ -47,7 +47,34 @@ class BaseOrmModel:
     
     
     def select_by_field(self, field, value):
-        """Get a matching record"""
+        """Get a matching record by the value of the field
+        
+        Args:
+            field (str): field to compare
+            value (str): value to check
+        Returns:
+            (Model): instance of related model
+        """
         
         query = f'SELECT * FROM {self.table_name} WHERE {field}={value}'
+        return self.model_instance(select_one_record(query))
+    
+
+    def select_by_multiple_fields(self, fields, values):
+        """Get a matching record by values of multiple fields
+        
+        Args:
+            fields ([str]): fields to compare
+            values ([str]): values to check
+        Returns:
+            (Model): instance of related model if exists
+        """
+        
+        query = f'SELECT * FROM {self.table_name} WHERE '
+        for field, value in zip(fields, values):
+            val = value
+            if not isinstance(value, int) or isinstance(value, float):
+                val = f'\'{value}\''
+            query += f'{field}={val} AND '
+        query = query.removesuffix(' AND ')
         return self.model_instance(select_one_record(query))
