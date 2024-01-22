@@ -53,11 +53,14 @@ class BaseOrmModel:
             field (str): field to compare
             value (str): value to check
         Returns:
-            (Model): instance of related model
+            (Model): instance of related model or None
         """
         
         query = f'SELECT * FROM {self.table_name} WHERE {field}={value}'
-        return self.model_instance(select_one_record(query))
+        record = select_one_record(query)
+        if record is not None:
+            return self.model_instance(select_one_record(query))
+        return None
     
 
     def select_by_multiple_fields(self, fields, values):
@@ -67,7 +70,7 @@ class BaseOrmModel:
             fields ([str]): fields to compare
             values ([str]): values to check
         Returns:
-            (Model): instance of related model if exists
+            (Model): instance of related model if exists or None
         """
         
         query = f'SELECT * FROM {self.table_name} WHERE '
@@ -77,4 +80,7 @@ class BaseOrmModel:
                 val = f'\'{value}\''
             query += f'{field}={val} AND '
         query = query.removesuffix(' AND ')
-        return self.model_instance(select_one_record(query))
+        record = select_one_record(query)
+        if record is not None:
+            return self.model_instance(select_one_record(query))
+        return None
