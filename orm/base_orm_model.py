@@ -93,3 +93,19 @@ class BaseOrmModel:
         if record is not None:
             return self.model_instance(select_one_record(query))
         return None
+    
+    def select_by_field_ilike(self, field, value):
+        """Get a matching record by the value of the field
+        
+        Args:
+            field (str): field to compare
+            value (str): value to check
+        Returns:
+            (Model): instance of related model or None
+        """
+        
+        query = f'SELECT * FROM {self.table_name} WHERE {field} ILIKE {value}'
+        record = select_one_record(query)
+        if record is not None:
+            return self.model_instance(select_one_record(query))
+        return None
