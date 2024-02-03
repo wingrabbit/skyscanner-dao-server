@@ -1,7 +1,7 @@
 import json
 from flask import Flask, request, jsonify
 from dao.db_connector import get_db_status
-from dao.orm_queries import search_city
+from dao.orm_queries import search_city, insert_city
 
 app = Flask(__name__)
 
@@ -19,8 +19,8 @@ def city():
             return jsonify({'id': -1}), 404
     elif request.method == 'POST':
         data = request.get_json(force=True)
-        json_response = json.loads(data)
-        return json_response
+        result = insert_city(data)
+        return jsonify(result.__dict__), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
