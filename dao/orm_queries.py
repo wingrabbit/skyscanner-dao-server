@@ -4,6 +4,7 @@ from orm.base_orm_model import BaseOrmModel
 from orm.cities import Cities, City
 from orm.searches import Searches, Search
 from orm.results import Results, Result
+from orm.prices import Prices, Price
 
 def search_city(city_name):
     return Cities().select_by_field_ilike('name', f'\'{city_name}\'')
@@ -16,3 +17,6 @@ def insert_search(json_data):
 
 def insert_result(json_data):
     return Results().insert_values([str(json_data["search_id"]), str(json_data["date_from"]), str(json_data["date_return"])])
+
+def insert_price(json_data):
+    return Prices().insert_values([str(json_data["result_id"]), str(json_data["price"]), str(json_data["stops"])])

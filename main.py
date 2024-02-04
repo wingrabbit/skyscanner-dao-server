@@ -1,7 +1,7 @@
 import json
 from flask import Flask, request, jsonify
 from dao.db_connector import get_db_status
-from dao.orm_queries import search_city, insert_city, insert_search, insert_result
+from dao.orm_queries import search_city, insert_city, insert_search, insert_result, insert_price
 
 app = Flask(__name__)
 
@@ -38,6 +38,15 @@ def result():
     elif request.method == 'POST':
         data = request.get_json(force=True)
         result = insert_result(data)
+        return jsonify(result.__dict__), 200
+
+@app.route("/price", methods=['GET', 'POST'])
+def price():
+    if request.method == 'GET':
+        return jsonify({'id': -1}), 404
+    elif request.method == 'POST':
+        data = request.get_json(force=True)
+        result = insert_price(data)
         return jsonify(result.__dict__), 200
 
 if __name__ == '__main__':
