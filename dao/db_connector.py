@@ -17,6 +17,10 @@ def select_one_record(query):
     cursor.execute(query)
     return cursor.fetchone()
 
+def select_all_records(query):
+    cursor.execute(query)
+    return cursor.fetchall()
+
 def execute_query(query):
     cursor.execute(query)
     conn.commit()

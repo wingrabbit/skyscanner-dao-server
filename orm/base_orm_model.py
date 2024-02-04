@@ -1,4 +1,4 @@
-from dao.db_connector import execute_query, select_one_record
+from dao.db_connector import execute_query, select_one_record, select_all_records
 from model.base_model import BaseModel
 from model.city import City
 from model.result import Result
@@ -55,7 +55,7 @@ class BaseOrmModel:
         return self.insert(self.default_fields, values)
     
     
-    def select_by_field(self, field, value):
+    def select_by_field(self, field, value, one_record=True):
         """Get a matching record by the value of the field
         
         Args:
@@ -66,10 +66,16 @@ class BaseOrmModel:
         """
         
         query = f'SELECT * FROM {self.table_name} WHERE {field}={value}'
-        record = select_one_record(query)
-        if record is not None:
-            return self.model_instance(select_one_record(query))
-        return None
+        record = select_one_record(query) if one_record else select_all_records(query)
+        if record is None:
+            return None
+        if one_record:
+            return self.model_instance(record)
+        else:
+            result = []
+            for r in record:
+                result.append(self.model_instance(r))
+            return result
     
 
     def select_by_multiple_fields(self, fields, values):
