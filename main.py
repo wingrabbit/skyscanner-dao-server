@@ -29,18 +29,17 @@ def city():
     
 @app.route("/search", methods=['GET', 'POST'])
 def search():
-    if request.method == 'GET':
-        user_id=request.args.get("user_id")
-        search = get_searches_by_user_id(user_id)
-        if search is not None:
-            result = json.dumps([ob.__dict__ for ob in search], indent=4, sort_keys=True, default=str)
-            print(result)
-            return json.loads(result), 200
-        return jsonify({'id': -1}), 404
-    elif request.method == 'POST':
-        data = request.get_json(force=True)
-        result = insert_search(data)
-        return jsonify(result.__dict__), 200
+    data = request.get_json(force=True)
+    result = insert_search(data)
+    return jsonify(result.__dict__), 200
+
+@app.route("/searches/user/<user_id>", methods=['GET'])
+def search_by_user_id(user_id):
+    search = get_searches_by_user_id(user_id)
+    if search is not None:
+        result = json.dumps([ob.__dict__ for ob in search], indent=4, sort_keys=True, default=str)
+        return json.loads(result), 200
+    return jsonify({'id': -1}), 404
     
 @app.route("/result", methods=['GET', 'POST'])
 def result():
