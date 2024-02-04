@@ -1,7 +1,10 @@
 import json
 from flask import Flask, request, jsonify
 from dao.db_connector import get_db_status
-from dao.orm_queries import search_city, insert_city, insert_search, insert_result, insert_price
+from dao.orm_queries.search_queries import insert_search
+from dao.orm_queries.city_queries import search_city, insert_city
+from dao.orm_queries.result_queries import insert_result
+from dao.orm_queries.price_queries import insert_price
 
 app = Flask(__name__)
 
