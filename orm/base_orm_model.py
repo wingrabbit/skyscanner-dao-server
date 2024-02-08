@@ -4,6 +4,7 @@ from model.city import City
 from model.result import Result
 from model.price import Price
 from model.search import Search
+from model.raw_search_request import RawSearchRequest
 
 class BaseOrmModel:
 

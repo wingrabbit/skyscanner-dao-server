@@ -6,6 +6,7 @@ from dao.orm_queries.search_queries import insert_search, get_searches_by_user_i
 from dao.orm_queries.city_queries import search_city, insert_city
 from dao.orm_queries.result_queries import insert_result
 from dao.orm_queries.price_queries import insert_price
+from dao.orm_queries.raw_request_queries import insert_raw_request
 from dao.db_connector import select_all_records, select_one_record
 from dao.sql_queries.view_queries import get_searches, get_search_by_id, get_top_prices_by_search_id
 from model.search import Search
@@ -33,6 +34,12 @@ def city():
 def search():
     data = request.get_json(force=True)
     result = insert_search(data)
+    return jsonify(result.__dict__), 200
+
+@app.route("/search/raw", methods=['GET', 'POST'])
+def search_raw():
+    data = request.get_json(force=True)
+    result = insert_raw_request(data)
     return jsonify(result.__dict__), 200
 
 @app.route("/searches/user/<user_id>", methods=['GET'])
