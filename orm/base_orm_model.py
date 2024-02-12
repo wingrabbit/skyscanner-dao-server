@@ -55,7 +55,16 @@ class BaseOrmModel:
         """
         return self.insert(self.default_fields, values)
     
+
+    def update_by_field(self, field, old_value, new_value):
+        query = f'UPDATE {self.table_name} SET {field}={new_value} WHERE {field}={old_value}'
+        try:
+            execute_query(query)
+        except (Exception) as error:
+            return f"Failed to update: {error}"
+        return self.select_by_field(field, new_value, one_record=False)
     
+
     def select_by_field(self, field, value, one_record=True):
         """Get a matching record by the value of the field
         
