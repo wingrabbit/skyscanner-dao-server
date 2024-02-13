@@ -88,7 +88,7 @@ class BaseOrmModel:
             return result
     
 
-    def select_by_multiple_fields(self, fields, values):
+    def select_by_multiple_fields(self, fields, values, one_record=True):
         """Get a matching record by values of multiple fields
         
         Args:
@@ -105,10 +105,16 @@ class BaseOrmModel:
                 val = f'\'{value}\''
             query += f'{field}={val} AND '
         query = query.removesuffix(' AND ')
-        record = select_one_record(query)
-        if record is not None:
-            return self.model_instance(select_one_record(query))
-        return None
+        record = select_one_record(query) if one_record else select_all_records(query)
+        if record is None:
+            return None
+        if one_record:
+            return self.model_instance(record)
+        else:
+            result = []
+            for r in record:
+                result.append(self.model_instance(r))
+            return result
     
     def select_by_field_ilike(self, field, value):
         """Get a matching record by the value of the field
