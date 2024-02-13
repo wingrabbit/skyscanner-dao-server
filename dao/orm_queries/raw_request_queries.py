@@ -7,6 +7,9 @@ def insert_raw_request(json_data):
 def get_new_raw_requests():
     return RawRequests().select_by_field('status', '\'NEW\'', one_record=False)
 
+def get_raw_requests_by_status(status):
+    return RawRequests().select_by_field('status', f'\'{status}\'', one_record=False)
+
 def get_raw_requests_by_user_id_and_status(user_id, status):
     return RawRequests().select_by_multiple_fields(['chat_id', 'status'], [user_id, status], one_record=False)
 
