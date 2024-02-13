@@ -6,7 +6,7 @@ from dao.orm_queries.search_queries import insert_search, get_searches_by_user_i
 from dao.orm_queries.city_queries import search_city, insert_city
 from dao.orm_queries.result_queries import insert_result
 from dao.orm_queries.price_queries import insert_price
-from dao.orm_queries.raw_request_queries import insert_raw_request, get_new_raw_requests, update_all_new_searches
+from dao.orm_queries.raw_request_queries import insert_raw_request, get_new_raw_requests, update_all_new_searches, update_search_id_by_id, update_search_status_by_id
 from dao.db_connector import select_all_records, select_one_record
 from dao.sql_queries.view_queries import get_searches, get_search_by_id, get_top_prices_by_search_id
 from model.search import Search
@@ -46,9 +46,18 @@ def search_raw():
         raw_requests = get_new_raw_requests()
         if raw_requests is not None:
             result = json.dumps([ob.__dict__ for ob in raw_requests], indent=4, sort_keys=True, default=str)
-            update_all_new_searches()
+            #update_all_new_searches()
             return json.loads(result), 200
         return jsonify({'id': -1}), 404
+
+@app.route("/search/raw/<raw_search_id>/update", methods=['GET'])
+def search_raw_update(raw_search_id):
+    new_status = request.args.get("status")
+    search_id = request.args.get("search_id")
+    if search_id is not None:
+        update_search_id_by_id(raw_search_id, search_id)
+    update_search_status_by_id(raw_search_id, new_status)
+    return jsonify({'result': 'success'}), 200
 
 @app.route("/searches/user/<user_id>", methods=['GET'])
 def search_by_user_id(user_id):
