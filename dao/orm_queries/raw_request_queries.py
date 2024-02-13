@@ -8,4 +8,4 @@ def get_new_raw_requests():
     return RawRequests().select_by_field('status', '\'NEW\'', one_record=False)
 
 def update_all_new_searches():
-    return RawRequests().update_by_field('status', '\'NEW\'', '\'IN PROGRESS\'')
+    return RawRequests().update_by_field('status', '\'IN PROGRESS\'', 'status', '\'NEW\'', )

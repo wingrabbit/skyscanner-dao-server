@@ -56,13 +56,13 @@ class BaseOrmModel:
         return self.insert(self.default_fields, values)
     
 
-    def update_by_field(self, field, old_value, new_value):
-        query = f'UPDATE {self.table_name} SET {field}={new_value} WHERE {field}={old_value}'
+    def update_by_field(self, field_to_update, value_to_set, field_to_compare, value_to_compare):
+        query = f'UPDATE {self.table_name} SET {field_to_update}={value_to_set} WHERE {field_to_compare}={value_to_compare}'
         try:
             execute_query(query)
         except (Exception) as error:
             return f"Failed to update: {error}"
-        return self.select_by_field(field, new_value, one_record=False)
+        return self.select_by_field(field_to_update, value_to_compare, one_record=False)
     
 
     def select_by_field(self, field, value, one_record=True):
