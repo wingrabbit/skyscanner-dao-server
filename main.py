@@ -1,4 +1,5 @@
 import json
+import logging
 from dataclasses import asdict
 from flask import Flask, request, jsonify
 from dao.db_connector import get_db_status
@@ -10,6 +11,9 @@ from dao.orm_queries.raw_request_queries import insert_raw_request, get_new_raw_
 from dao.db_connector import select_all_records, select_one_record
 from dao.sql_queries.view_queries import get_searches, get_search_by_id, get_top_prices_by_search_id
 from model.search import Search
+
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 app = Flask(__name__)
 
