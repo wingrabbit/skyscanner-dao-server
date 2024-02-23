@@ -7,6 +7,8 @@ conn = psycopg2.connect(database = DB_NAME,
                         user = DB_USER,
                         password = DB_PASSWORD)
 
+conn.autocommit = True
+
 cursor = conn.cursor()
 
 def get_db_status():

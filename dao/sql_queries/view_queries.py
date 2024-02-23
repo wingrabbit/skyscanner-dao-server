@@ -12,7 +12,7 @@ def get_searches():
 def get_search_by_id(id):
     return f"{get_searches()} WHERE s.id={id}"
 
-def get_top_prices_by_search_id(search_id, limit=15):
+def get_top_prices_by_search_id(search_id, limit=10):
     query = f"""WITH sub_q AS 
             (SELECT
             r.date_from,
